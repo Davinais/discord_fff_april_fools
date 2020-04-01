@@ -17,12 +17,14 @@ class Cmd(commands.Cog):
         channel = ctx.author.voice.channel
         vc = ctx.voice_client
         if vc and vc.is_connected():
-            await ctx.voice_client.move_to(channel)
+            await vc.move_to(channel)
         else:
             await channel.connect()
 
     async def leave(self, ctx):
-        await ctx.voice_client.disconnect()
+        vc = ctx.voice_client
+        if vc and vc.is_connected():
+            await vc.disconnect()
 
 def setup(bot):
     bot.add_cog(Cmd(bot))
